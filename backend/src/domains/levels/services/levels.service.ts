@@ -13,6 +13,10 @@ export class LevelsService {
     return await this.levelsRepository.getAll(data);
   }
 
+  async findById(id: number) {
+    return await this.levelsRepository.findOneBy({ id });
+  };
+
   async saveLevel(data: LevelFormCreate): Promise<LevelDataDto> {
 
     const existLevel = await this.levelsRepository.findOne({
@@ -23,15 +27,7 @@ export class LevelsService {
       throw new BadRequestException(`O Nível ${data.level} já existe.`);
     };
 
-    const level = this.levelsRepository.create(data);
-
-    const saved = await this.levelsRepository.save(level);
-
-    return {
-      id: saved.id,
-      level: saved.level
-    };
-
+    return await this.levelsRepository.save(data);
   }
 
   async editLevel(id: number, data: LevelFormUpdate): Promise<LevelDataDto> {
@@ -56,6 +52,12 @@ export class LevelsService {
   }
 
   async deleteLevel(id) {
+    const existRelation = await this.levelsRepository.findRelations(id);
+
+    if (existRelation) {
+      throw new BadRequestException("Nível já está vinculado a um Desenvolvedor");
+    };
+
     const level = await this.levelsRepository.findOne({
       where: { id }
     });

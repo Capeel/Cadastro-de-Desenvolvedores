@@ -5,7 +5,7 @@ export type LevelDataDto = {
 
 export type LevelIndexPaginatedDto = {
   data: LevelDataDto[];
-  page: number;
+  currentPage: number;
   perPage: number;
   lastPage: number;
   total: number;

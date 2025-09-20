@@ -11,7 +11,7 @@ export class LevelsRepository extends Repository<LevelsEntity> {
   }
 
   async getAll(data: LevelIndexQuery): Promise<LevelIndexPaginatedDto> {
-    const { page, perPage, level } = data;
+    const { currentPage, perPage, level } = data;
 
     const qb = this.createQueryBuilder('levels');
 
@@ -21,7 +21,7 @@ export class LevelsRepository extends Repository<LevelsEntity> {
 
     qb.orderBy('levels.id')
       .take(Number(perPage))
-      .skip((Number(page) - 1) * Number(perPage))
+      .skip((Number(currentPage) - 1) * Number(perPage))
 
     const [levels, total] = await qb.getManyAndCount();
 
@@ -34,11 +34,18 @@ export class LevelsRepository extends Repository<LevelsEntity> {
 
     return {
       data: payload,
-      page,
+      currentPage,
       perPage,
       total,
       lastPage: Math.ceil(total / perPage)
     };
+  }
 
+  async findRelations(id: number): Promise<boolean> {
+    const existRelation = this.createQueryBuilder('developers')
+      .where('developers.levelsId = :id', { id })
+      .getExists();
+
+    return existRelation;
   }
 }

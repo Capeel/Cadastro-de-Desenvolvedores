@@ -18,7 +18,7 @@ export class LevelIndexQuery {
   level?: string;
 
   @IsNotEmpty()
-  page: number;
+  currentPage: number;
 
   @IsNotEmpty()
   perPage: number;

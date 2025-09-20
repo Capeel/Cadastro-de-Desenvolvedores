@@ -12,11 +12,12 @@ export class CreateLevelsTable1758387437685 implements MigrationInterface {
           { name: 'level', type: 'varchar' },
         ],
       }),
+      true,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('levels');
+    await queryRunner.dropTable('public.levels');
   }
 
 }

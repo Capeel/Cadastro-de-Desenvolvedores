@@ -9,7 +9,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
     imports: [TypeOrmModule.forFeature([LevelsEntity])],
     controllers: [LevelsController],
     providers: [LevelsService, LevelsRepository],
-    exports: [],
+    exports: [LevelsService],
 })
 
 export class LevelsModule { }

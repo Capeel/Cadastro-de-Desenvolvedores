@@ -3,7 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
-import { LevelsModule } from './domains/levels/levels.module'; 
+import { LevelsModule } from './domains/levels/levels.module';
+import { DevelopersModule } from './domains/developers/developers.module';
 dotenv.config({ path: '.env' });
 
 @Module({
@@ -18,7 +19,8 @@ dotenv.config({ path: '.env' });
     autoLoadEntities: true,
     synchronize: true,
   }),
-    LevelsModule
+    LevelsModule,
+    DevelopersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
