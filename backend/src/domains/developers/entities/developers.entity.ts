@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColu
 
 @Entity({
   schema: 'public',
-  name: 'developers',
+  name: 'desenvolvedores',
   synchronize: false
 })
 
@@ -16,28 +16,26 @@ export class DevelopersEntity extends BaseEntity {
   id: number;
 
   @ManyToOne(() => LevelsEntity)
-  @JoinColumn({ name: 'levelsId' })
-  levels: LevelsEntity;
-  @Column()
-  levelsId: number;
+  @JoinColumn({ name: 'nivel_id' })
+  nivel: LevelsEntity;
 
   @Column({
     type: 'varchar',
-    name: 'name'
+    name: 'nome'
   })
-  name: string;
+  nome: string;
 
   @Column({
     type: 'varchar',
-    name: 'gender'
+    name: 'sexo'
   })
-  gender: string;
+  sexo: string;
 
   @Column({
     type: 'timestamp',
-    name: 'birthday'
+    name: 'data_nascimento'
   })
-  birthday: Date;
+  data_nascimento: Date;
 
   @Column({
     type: 'varchar',

@@ -1,35 +1,58 @@
 import { IsNotEmpty, IsOptional } from "class-validator";
 
-export class DevelopersFormCreate {
+export class DesenvolvedoresFormCreate {
   @IsNotEmpty({ message: "Nível deve ser informado" })
-  levelsId: number;
+  nivel_id: number;
 
   @IsNotEmpty({ message: "Nome deve ser informado" })
-  name: string;
+  nome: string;
 
   @IsNotEmpty({ message: "Sexo deve ser informado" })
-  gender: string;
+  sexo: string;
 
   @IsNotEmpty({ message: "Data de nascimento deve ser informada" })
-  birthday: string;
+  data_nascimento: string;
 
   @IsNotEmpty({ message: "Hobby deve ser informado" })
   hobby: string;
 }
 
-export class DevelopersFormUpdate {
+export class DesenvolvedoresFormUpdate {
   @IsOptional()
-  levelsId: number;
+  nivel_id: number;
 
   @IsOptional()
-  name: string;
+  nome: string;
 
   @IsOptional()
-  gender: string;
+  sexo: string;
 
   @IsOptional()
-  birthday: string;
+  data_nascimento: string;
 
   @IsOptional()
   hobby: string;
+}
+
+export class DesenvolvedoresIndexQuery {
+  @IsOptional()
+  nome?: string;
+
+  @IsOptional()
+  sexo?: string;
+
+  @IsOptional()
+  data_nascimento?: string;
+
+  @IsOptional()
+  hobby?: string;
+
+  @IsOptional()
+  nivel?: string;
+
+  @IsNotEmpty()
+  current_page: number;
+
+  @IsNotEmpty()
+  per_page: number;
 }

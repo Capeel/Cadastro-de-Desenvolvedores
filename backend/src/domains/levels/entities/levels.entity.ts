@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
   schema: 'public',
-  name: 'levels',
+  name: 'niveis',
   synchronize: false,
 })
 
@@ -15,7 +15,7 @@ export class LevelsEntity extends BaseEntity {
 
   @Column({
     type: 'varchar',
-    name: 'level',
+    name: 'nivel',
   })
-  level: string;
+  nivel: string;
 }

@@ -1,12 +1,12 @@
-export type LevelDataDto = {
+export type NiveisDataDto = {
   id: number,
-  level: string;
+  nivel: string;
 };
 
-export type LevelIndexPaginatedDto = {
-  data: LevelDataDto[];
-  currentPage: number;
-  perPage: number;
-  lastPage: number;
+export type NiveisIndexPaginatedDto = {
+  data: NiveisDataDto[];
+  per_page: number;
+  current_page: number;
+  last_page: number;
   total: number;
 }

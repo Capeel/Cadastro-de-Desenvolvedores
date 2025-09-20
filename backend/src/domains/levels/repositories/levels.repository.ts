@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 import { LevelsEntity } from "../entities/levels.entity";
-import { LevelIndexQuery } from "../form-validations/levels.form-validations";
-import { LevelIndexPaginatedDto } from "../dtos/level.dto";
+import { NiveisIndexQuery } from "../form-validations/levels.form-validations";
+import { NiveisIndexPaginatedDto } from "../dtos/level.dto";
 
 @Injectable()
 export class LevelsRepository extends Repository<LevelsEntity> {
@@ -10,40 +10,41 @@ export class LevelsRepository extends Repository<LevelsEntity> {
     super(LevelsEntity, dataSource.createEntityManager());
   }
 
-  async getAll(data: LevelIndexQuery): Promise<LevelIndexPaginatedDto> {
-    const { currentPage, perPage, level } = data;
+  async getAll(data: NiveisIndexQuery): Promise<NiveisIndexPaginatedDto> {
+    const { current_page, per_page, nivel } = data;
 
-    const qb = this.createQueryBuilder('levels');
+    const qb = this.createQueryBuilder('niveis');
 
-    if (level) {
-      qb.andWhere('unaccent(levels.level) ILIKE unaccent(:level)', { level: `%${level}%` })
+    if (nivel) {
+      qb.andWhere('unaccent(niveis.nivel) ILIKE unaccent(:nivel)', { nivel: `%${nivel}%` })
     }
 
-    qb.orderBy('levels.id')
-      .take(Number(perPage))
-      .skip((Number(currentPage) - 1) * Number(perPage))
+    qb.orderBy('niveis.id')
+      .take(Number(per_page))
+      .skip((Number(current_page) - 1) * Number(per_page))
 
     const [levels, total] = await qb.getManyAndCount();
 
     const payload = levels.map((level) => {
       return {
         id: level.id,
-        level: level.level,
+        nivel: level.nivel,
       }
     });
 
     return {
       data: payload,
-      currentPage,
-      perPage,
+      current_page,
+      per_page,
       total,
-      lastPage: Math.ceil(total / perPage)
+      last_page: Math.ceil(total / per_page)
     };
   }
 
   async findRelations(id: number): Promise<boolean> {
-    const existRelation = this.createQueryBuilder('developers')
-      .where('developers.levelsId = :id', { id })
+    const existRelation = this.manager.getRepository('desenvolvedores')
+      .createQueryBuilder('dev')
+      .where('dev.nivel_id = :id', { id })
       .getExists();
 
     return existRelation;

@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
-export class LevelFormCreate {
+export class NiveisFormCreate {
   @IsNotEmpty({ message: "Nível deve ser informado" })
   @IsString()
-  level: string;
+  nivel: string;
 }
 
-export class LevelFormUpdate {
+export class NiveisFormUpdate {
   @IsOptional()
   @IsString()
-  level?: string;
+  nivel?: string;
 }
 
-export class LevelIndexQuery {
+export class NiveisIndexQuery {
   @IsOptional()
-  level?: string;
+  nivel?: string;
 
   @IsNotEmpty()
-  currentPage: number;
+  current_page: number;
 
   @IsNotEmpty()
-  perPage: number;
+  per_page: number;
 }

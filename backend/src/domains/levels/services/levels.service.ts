@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { LevelsRepository } from "../repositories/levels.repository";
-import { LevelFormCreate, LevelFormUpdate, LevelIndexQuery } from "../form-validations/levels.form-validations"
-import { LevelDataDto, LevelIndexPaginatedDto } from "../dtos/level.dto"
+import { NiveisFormCreate, NiveisFormUpdate, NiveisIndexQuery } from "../form-validations/levels.form-validations"
+import { NiveisDataDto, NiveisIndexPaginatedDto } from "../dtos/level.dto"
 
 @Injectable()
 export class LevelsService {
@@ -9,7 +9,7 @@ export class LevelsService {
     private readonly levelsRepository: LevelsRepository,
   ) { }
 
-  async index(data: LevelIndexQuery): Promise<LevelIndexPaginatedDto> {
+  async index(data: NiveisIndexQuery): Promise<NiveisIndexPaginatedDto> {
     return await this.levelsRepository.getAll(data);
   }
 
@@ -17,20 +17,20 @@ export class LevelsService {
     return await this.levelsRepository.findOneBy({ id });
   };
 
-  async saveLevel(data: LevelFormCreate): Promise<LevelDataDto> {
+  async saveLevel(data: NiveisFormCreate): Promise<NiveisDataDto> {
 
     const existLevel = await this.levelsRepository.findOne({
-      where: { level: data.level }
+      where: { nivel: data.nivel }
     });
 
     if (existLevel) {
-      throw new BadRequestException(`O Nível ${data.level} já existe.`);
+      throw new BadRequestException(`O Nível ${data.nivel} já existe.`);
     };
 
     return await this.levelsRepository.save(data);
   }
 
-  async editLevel(id: number, data: LevelFormUpdate): Promise<LevelDataDto> {
+  async editLevel(id: number, data: NiveisFormUpdate): Promise<NiveisDataDto> {
     const level = await this.levelsRepository.findOne({
       where: { id }
     });
@@ -39,15 +39,15 @@ export class LevelsService {
       throw new BadRequestException("Nível não encontrado");
     }
 
-    if (data.level) {
-      level.level = data.level;
+    if (data.nivel) {
+      level.nivel = data.nivel;
     };
 
     const saved = await this.levelsRepository.save(level);
 
     return {
       id: level.id,
-      level: level.level,
+      nivel: level.nivel,
     };
   }
 

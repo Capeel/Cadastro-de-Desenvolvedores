@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { DevelopersRepository } from "../repositories/developers.repository";
-import { DevelopersFormCreate, DevelopersFormUpdate } from "../form-validations/developers.form-validation";
-import { DevelopersDataDto } from "../dtos/developers.dto";
+import { DesenvolvedoresFormCreate, DesenvolvedoresFormUpdate, DesenvolvedoresIndexQuery } from "../form-validations/developers.form-validation";
+import { DesenvolvedoresDataDto, DesenvolvedoresIndexPaginatedDto } from "../dtos/developers.dto";
 import { LevelsService } from "src/domains/levels/services/levels.service";
 
 @Injectable()
@@ -11,10 +11,13 @@ export class DevelopersService {
     private readonly levelsService: LevelsService
   ) { }
 
+  async getAllByQuery(data: DesenvolvedoresIndexQuery): Promise<DesenvolvedoresIndexPaginatedDto> {
+    return await this.developersRepository.getByQuery(data);
+  }
 
-  async saveDevelopers(data: DevelopersFormCreate): Promise<DevelopersDataDto> {
+  async saveDevelopers(data: DesenvolvedoresFormCreate): Promise<DesenvolvedoresDataDto> {
 
-    const level = await this.levelsService.findById(data.levelsId);
+    const level = await this.levelsService.findById(data.nivel_id);
 
     if (!level) {
       throw new BadRequestException("Nível não encontrado");
@@ -22,14 +25,14 @@ export class DevelopersService {
 
     const developer = this.developersRepository.create({
       ...data,
-      levelsId: data.levelsId
+      nivel: { id: data.nivel_id }
     });
 
     return this.developersRepository.save(developer);
 
   }
 
-  async editDevelopers(id: number, data: DevelopersFormUpdate): Promise<DevelopersDataDto> {
+  async editDevelopers(id: number, data: DesenvolvedoresFormUpdate): Promise<DesenvolvedoresDataDto> {
 
     const developer = await this.developersRepository.findOneBy({ id });
 
@@ -37,8 +40,8 @@ export class DevelopersService {
       throw new BadRequestException("Desenvolvedor não encontrado");
     }
 
-    if (data.levelsId) {
-      const level = await this.levelsService.findById(data.levelsId);
+    if (data.nivel_id) {
+      const level = await this.levelsService.findById(data.nivel_id);
       if (!level) {
         throw new BadRequestException("Nível não encontrado");
       }
@@ -48,6 +51,16 @@ export class DevelopersService {
 
     return this.developersRepository.save(developer);
 
+  }
+
+  async deleteDeveloper(id: number) {
+    const developer = await this.developersRepository.findOneBy({ id });
+
+    if (!developer) {
+      throw new BadRequestException("Desenvolvedor não encontrado");
+    }
+
+    return await this.developersRepository.delete(id);
   }
 
 
