@@ -1,16 +1,47 @@
 'use client'
 
+import { useNiveis } from '@/hooks/useNiveis'
 import { AddIcon } from '@chakra-ui/icons'
-import { Box, Button, FormControl, FormLabel, HStack, Input, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import {
+  Box, Button, FormControl, FormLabel, HStack, Input,
+  Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead,
+  Tr, useToast, VStack
+} from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { NiveisDataDto, NiveisFilterDto } from './types'
 
 const MotionFormLabel = motion(FormLabel)
 
 export default function NivelHome() {
   const [isFocus, setIsFocus] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [current_page, set_current_page] = useState<number>(1);
+  const { getLevels } = useNiveis();
+  const [isLoading, setIsLoading] = useState(false);
+  const [nivel, setNivel] = useState<NiveisDataDto[]>([]);
+  const [filter, setFilter] = useState<NiveisFilterDto>();
+  const per_page = 5;
+  const customToast = useToast();
 
+  const callbackNivel = useCallback(() => {
+    setIsLoading(true);
+    getLevels({ current_page, per_page, ...filter })
+      .then((response) => {
+        setNivel(response.data.data)
+        set_current_page(current_page)
+      })
+      .catch((error) => {
+        customToast(error.response?.data?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
+  }, [current_page, filter]);
+
+  useEffect(() => {
+    callbackNivel()
+  }, [callbackNivel]);
 
   return (
     <VStack
@@ -85,15 +116,19 @@ export default function NivelHome() {
                 </Tr>
               </Thead>
               <Tbody bgColor="gray.500">
-                <Tr>
-                  <Td width="70%" color="white">Nível</Td>
-                  <Td>
-                    <HStack>
-                      <Button>Editar</Button>
-                      <Button>Excluir</Button>
-                    </HStack>
-                  </Td>
-                </Tr>
+                {nivel.map((niveis) => {
+                  return (
+                    <Tr key={niveis.id}>
+                      <Td width="70%" color="white">{niveis.nivel}</Td>
+                      <Td>
+                        <HStack>
+                          <Button>Editar</Button>
+                          <Button>Excluir</Button>
+                        </HStack>
+                      </Td>
+                    </Tr>
+                  )
+                })}
               </Tbody>
             </Table>
           </TableContainer>
