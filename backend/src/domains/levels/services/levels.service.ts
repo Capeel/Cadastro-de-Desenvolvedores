@@ -14,6 +14,10 @@ export class LevelsService {
     return await this.levelsRepository.getAll(data);
   }
 
+  async getAllNiveis() {
+    return await this.levelsRepository.find();
+  }
+
   async findById(id: number) {
     return await this.levelsRepository.findOneBy({ id });
   };

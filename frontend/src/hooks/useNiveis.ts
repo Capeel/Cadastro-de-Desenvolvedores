@@ -28,11 +28,16 @@ export const useNiveis = () => {
     return api.delete(`/niveis/${id}`);
   }
 
+  const getAllNiveis = () => {
+    return api.get(`/niveis/get-all`);
+  }
+
 
   return {
     getLevels,
     saveLevel,
     deleteLevel,
     editLevel,
+    getAllNiveis,
   }
 }

@@ -3,7 +3,7 @@
 import { ReactNode } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
 
-export default function NiveisLayout({ children }: { children: ReactNode }) {
+export default function DesenvolvedoresLayout({ children }: { children: ReactNode }) {
   return (
     <Flex
       minH="100vh"

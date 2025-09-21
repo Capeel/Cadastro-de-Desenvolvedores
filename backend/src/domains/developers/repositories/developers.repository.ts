@@ -25,8 +25,9 @@ export class DevelopersRepository extends Repository<DevelopersEntity> {
       qb.andWhere('unaccent(desenvolvedores.sexo) ILIKE unaccent(:sexo)', { sexo: `%${sexo}%` })
     }
     if (data_nascimento) {
-      qb.andWhere('unaccent(desenvolvedores.data_nascimento) ILIKE unaccent(:data_nascimento)',
-        { data_nascimento: `%${data_nascimento}%` })
+      qb.andWhere('DATE(desenvolvedores.data_nascimento) = :data_nascimento', {
+        data_nascimento: data_nascimento,
+      });
     }
     if (hobby) {
       qb.andWhere('unaccent(desenvolvedores.hobby) ILIKE unaccent(:hobby)', { hobby: `%${hobby}%` })

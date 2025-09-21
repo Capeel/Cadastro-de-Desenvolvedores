@@ -10,7 +10,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
   Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead,
   Tr, useDisclosure, useToast, VStack
 } from '@chakra-ui/react'
@@ -19,6 +18,7 @@ import { NiveisDataDto, NiveisFilterDto, NiveisFormData } from './types'
 import { AnimatedInput } from '@/components/customInput'
 import { useForm } from 'react-hook-form';
 import { Pagination } from '@/components/pagination'
+import { LoadingOverlay } from '@/components/loadingOverlay'
 
 export default function NivelHome() {
   const [inputValue, setInputValue] = useState("");
@@ -165,7 +165,7 @@ export default function NivelHome() {
       width="100%"
       padding={10}
     >
-      {isLoading && (<Spinner />)}
+      {isLoading && (<LoadingOverlay isOpen={isLoading} />)}
       <Box
         width="100%"
         minH="90vh"

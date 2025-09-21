@@ -15,6 +15,12 @@ export class LevelsController {
     return await this.levelsService.index(query);
   };
 
+  @Get('/get-all')
+  @HttpCode(HttpStatus.OK)
+  async getAllniveis() {
+    return await this.levelsService.getAllNiveis();
+  };
+
   @Post('/create')
   @HttpCode(HttpStatus.CREATED)
   async store(

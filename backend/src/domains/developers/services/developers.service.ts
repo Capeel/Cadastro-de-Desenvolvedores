@@ -17,7 +17,7 @@ export class DevelopersService {
 
   async saveDevelopers(data: DesenvolvedoresFormCreate): Promise<DesenvolvedoresDataDto> {
 
-    const level = await this.levelsService.findById(data.nivel_id);
+    const level = await this.levelsService.findById(data.nivel.id);
 
     if (!level) {
       throw new BadRequestException("Nível não encontrado");
@@ -25,7 +25,7 @@ export class DevelopersService {
 
     const developer = this.developersRepository.create({
       ...data,
-      nivel: { id: data.nivel_id }
+      nivel: { id: data.nivel.id }
     });
 
     return this.developersRepository.save(developer);
@@ -34,20 +34,27 @@ export class DevelopersService {
 
   async editDevelopers(id: number, data: DesenvolvedoresFormUpdate): Promise<DesenvolvedoresDataDto> {
 
-    const developer = await this.developersRepository.findOneBy({ id });
+    const developer = await this.developersRepository.findOne({
+      where: { id },
+      relations: ['nivel'],
+    });
 
     if (!developer) {
       throw new BadRequestException("Desenvolvedor não encontrado");
     }
 
-    if (data.nivel_id) {
-      const level = await this.levelsService.findById(data.nivel_id);
+    if (data.nivel.id) {
+      const level = await this.levelsService.findById(data.nivel.id);
       if (!level) {
         throw new BadRequestException("Nível não encontrado");
       }
+      developer.nivel = level;
     }
 
-    Object.assign(developer, data);
+    Object.assign(developer, {
+      ...data,
+      nivel: developer.nivel,
+    });
 
     return this.developersRepository.save(developer);
 

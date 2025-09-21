@@ -2,7 +2,7 @@ import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class DesenvolvedoresFormCreate {
   @IsNotEmpty({ message: "Nível deve ser informado" })
-  nivel_id: number;
+  nivel: { id: number };
 
   @IsNotEmpty({ message: "Nome deve ser informado" })
   nome: string;
@@ -19,7 +19,7 @@ export class DesenvolvedoresFormCreate {
 
 export class DesenvolvedoresFormUpdate {
   @IsOptional()
-  nivel_id: number;
+  nivel: { id: number };
 
   @IsOptional()
   nome: string;
