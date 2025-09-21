@@ -5,6 +5,11 @@ export type NiveisDataDto = {
     per_page: number;
 };
 
+export type NiveisFormData = {
+    id?: number;
+    nivel?: string;
+}
+
 export type NiveisIndexPaginatedDto = {
     data: NiveisDataDto[];
     per_page: number;

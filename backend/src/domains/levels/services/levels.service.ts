@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { LevelsRepository } from "../repositories/levels.repository";
 import { NiveisFormCreate, NiveisFormUpdate, NiveisIndexQuery } from "../form-validations/levels.form-validations"
 import { NiveisDataDto, NiveisIndexPaginatedDto } from "../dtos/level.dto"
+import { Not } from "typeorm";
 
 @Injectable()
 export class LevelsService {
@@ -34,6 +35,17 @@ export class LevelsService {
     const level = await this.levelsRepository.findOne({
       where: { id }
     });
+
+    const existLevel = await this.levelsRepository.findOne({
+      where: {
+        nivel: data.nivel,
+        id: Not(id),
+      }
+    })
+
+    if (existLevel) {
+      throw new BadRequestException(`Já existe o Nível ${data.nivel}`);
+    }
 
     if (!level) {
       throw new BadRequestException("Nível não encontrado");
