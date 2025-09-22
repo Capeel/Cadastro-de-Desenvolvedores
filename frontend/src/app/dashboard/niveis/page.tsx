@@ -210,8 +210,7 @@ export default function NivelHome() {
             Cadastro de Nível
           </Text>
         </Box>
-        <Box minWidth="100%" bgColor="blue.100" padding={10} marginTop="-8px" 
-        borderBottomWidth={3} borderBottomColor="blue.700">
+        <Box minWidth="100%" bgColor="#EDF2F7" padding={10} marginTop="-8px">
           <HStack
             justifyContent="space-between"
             width="100%"
@@ -253,11 +252,12 @@ export default function NivelHome() {
               <ModalContent bgColor="white" borderRadius={3}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <ModalHeader
-                    marginTop="10px"
+                    marginTop="5px"
                     fontSize="27px"
                     fontFamily="Geist"
                     color="gray.700"
                     fontWeight="semibold"
+                    marginBottom="20px"
                   >
                     Adicionar Nível
                   </ModalHeader>
@@ -295,7 +295,7 @@ export default function NivelHome() {
           </VStack>
           <Stack marginTop="30px">
             <TableContainer>
-              <Table>
+              <Table variant="striped" colorScheme="gray">
                 <Thead bgColor="blue.700">
                   <Tr>
                     <Th color="white" onClick={sortByName} fontSize="15px">
@@ -309,7 +309,7 @@ export default function NivelHome() {
                     <Th color="white" textAlign={"center"} fontSize="15px">Ações</Th>
                   </Tr>
                 </Thead>
-                <Tbody bgColor="blue.50">
+                <Tbody>
                   {nivel.map((niveis) => {
 
                     const countDev = (devsCount ?? []).find

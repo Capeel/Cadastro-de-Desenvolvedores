@@ -254,8 +254,7 @@ export default function DesenvolvedoresHomoe() {
             Cadastro de Desenvolvedores
           </Text>
         </Box>
-        <VStack w="100%" alignItems="start" bgColor="blue.100" marginTop="-8px"
-          borderBottomWidth={3} borderBottomColor="blue.700">
+        <VStack w="100%" alignItems="start" bgColor="#EDF2F7" marginTop="-8px">
           <HStack justifyContent="space-between" w="100%" padding={10}>
             <Select
               w="20%"
@@ -453,7 +452,7 @@ export default function DesenvolvedoresHomoe() {
         </VStack>
         <Stack marginTop="30px">
           <TableContainer>
-            <Table>
+            <Table variant="striped" colorScheme="gray">
               <Thead bgColor="blue.700">
                 <Tr>
                   <Th color="white" width="30%" onClick={sortBy} fontSize="15px">
@@ -468,7 +467,7 @@ export default function DesenvolvedoresHomoe() {
                   <Th color="white" textAlign={"center"} fontSize="15px">Ações</Th>
                 </Tr>
               </Thead>
-              <Tbody bgColor="blue.50">
+              <Tbody>
                 {desenvolvedores.map((devs) => {
                   return (
                     <Tr key={devs.id}>
