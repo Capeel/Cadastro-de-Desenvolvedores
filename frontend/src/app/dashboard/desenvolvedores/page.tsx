@@ -4,6 +4,8 @@ import { AddIcon, ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon, PlusSquareIc
 import {
   Box, Button, Divider, FormControl, FormErrorMessage, HStack,
   Input,
+  Menu,
+  MenuButton,
   Modal,
   ModalBody,
   ModalContent,
@@ -11,6 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  SelectField,
   Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead,
   Tr, useDisclosure, useToast, VStack
 } from '@chakra-ui/react'
@@ -232,44 +235,87 @@ export default function DesenvolvedoresHomoe() {
   return (
     <VStack
       width="100%"
-      padding={10}
     >
       {isLoading && (<LoadingOverlay isOpen={isLoading} />)}
-      <Box
-        width="100%"
-        minH="90vh"
-        bgColor="gray.400"
-        borderRadius={10}
-        padding={10}
-      >
-        <HStack justifyContent="space-between">
+      <VStack minWidth="100%">
+        <Box
+          minHeight="100px"
+          minWidth="100%"
+          bgColor="#2a4365"
+          alignContent="center"
+          paddingLeft={5}
+        >
           <Text
             fontSize="4xl"
+            fontWeight="bold"
             fontFamily="Geist"
-            color="gray.700"
-            fontWeight="semibold"
+            color="white"
           >
-            Cadastro de Nível
+            Cadastro de Desenvolvedores
           </Text>
-          <Button
-            width="250px"
-            bgColor="gray.600"
-            color="gray.100"
-            colorScheme="blackAlpha"
-            onClick={() => newNivelModal()}
-          >
-            Novo Desenvolvedor
-            <AddIcon width="13px" marginLeft={2} />
-          </Button>
-        </HStack>
+        </Box>
+        <VStack w="100%" alignItems="start" bgColor="blue.100" marginTop="-8px"
+          borderBottomWidth={3} borderBottomColor="blue.700">
+          <HStack justifyContent="space-between" w="100%" padding={10}>
+            <Select
+              w="20%"
+              marginBottom="-20px"
+              variant="flushed"
+              onChange={(e) => setFilterField(e.target.value)}
+              placeholder="Selecione sua busca:"
+              borderBottomWidth={2}
+              borderBottomColor="blue.700"
+            >
+              {filtersType.map((filt) => {
+                return (
+                  <option
+                    value={filt.value}
+                    key={filt.value}
+                    style={{
+                      backgroundColor: "#2c5282",
+                      paddingLeft: "20px",
+                      color: "white"
+                    }}
+                  >
+                    {filt.name}
+                  </option>
+                )
+              })}
+            </Select>
+            <AnimatedInput
+              label="Digite sua busca:"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              w="90%"
+              borderBottomWidth={2}
+              borderBottomColor="blue.700"
+            />
+            <Button
+              width="350px"
+              bgColor="blue.700"
+              color="white"
+              colorScheme="blue"
+              onClick={() => newNivelModal()}
+              marginBottom="-23px"
+            >
+              Novo Desenvolvedor
+              <AddIcon width="13px" marginLeft={2} />
+            </Button>
+          </HStack>
+        </VStack>
+      </VStack>
+      <Box
+        width="100%"
+        paddingRight={8}
+        paddingLeft={8}
+      >
         <VStack
-          marginTop={3}
           align="start"
           spacing={3}
         >
           <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
-            <ModalContent bgColor="gray.300">
+            <ModalContent bgColor="white" borderRadius={3}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <ModalHeader
                   marginTop="10px"
@@ -319,7 +365,7 @@ export default function DesenvolvedoresHomoe() {
                                 value={nv.id}
                                 key={nv.id}
                                 style={{
-                                  backgroundColor: "#718096",
+                                  backgroundColor: "#2c5282",
                                   color: "white",
                                 }}
                               >
@@ -392,8 +438,8 @@ export default function DesenvolvedoresHomoe() {
                 <ModalFooter>
                   <Button
                     width="250px"
-                    bgColor="gray.600"
-                    color="gray.100"
+                    bgColor="blue.700"
+                    color="white"
                     colorScheme="blackAlpha"
                     type="submit"
                   >
@@ -404,87 +450,48 @@ export default function DesenvolvedoresHomoe() {
               </form>
             </ModalContent>
           </Modal>
-          <VStack w="100%" alignItems="start">
-            <Text
-              marginBottom="-15px"
-              textAlign="start"
-              fontSize="1.3rem"
-              color="#2D3748"
-              fontWeight="semibold"
-            >
-              Escolha o que quer buscar:
-            </Text>
-            <HStack justifyContent="space-between" w="100%">
-              <Select
-                w="20%"
-                marginBottom="-20px"
-                variant="flushed"
-                onChange={(e) => setFilterField(e.target.value)}
-                placeholder="Selecione sua busca:"
-              >
-                {filtersType.map((filt) => {
-                  return (
-                    <option
-                      value={filt.value}
-                      key={filt.value}
-                      style={{
-                        backgroundColor: "#718096",
-                        paddingLeft: "20px",
-                        color: "white"
-                      }}
-                    >
-                      {filt.name}
-                    </option>
-                  )
-                })}
-              </Select>
-              <AnimatedInput
-                label="Digite sua busca:"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
-            </HStack>
-          </VStack>
         </VStack>
-        <Stack marginTop="70px">
+        <Stack marginTop="30px">
           <TableContainer>
             <Table>
-              <Thead bgColor="gray.600">
+              <Thead bgColor="blue.700">
                 <Tr>
-                  <Th color="white" width="30%" onClick={sortBy}>
+                  <Th color="white" width="30%" onClick={sortBy} fontSize="15px">
                     Nome {
                       orderBy === "asc" ? <ArrowDownIcon />
                         : <ArrowUpIcon />}
                   </Th>
-                  <Th color="white" width="20%">Nível</Th>
-                  <Th color="white" width="10%">Sexo</Th>
-                  <Th color="white" width="10%">Data de Nascimento</Th>
-                  <Th color="white" width="10%">Hobby</Th>
-                  <Th color="white" textAlign={"center"}>Ações</Th>
+                  <Th color="white" width="20%" fontSize="15px">Nível</Th>
+                  <Th color="white" width="10%" fontSize="15px">Sexo</Th>
+                  <Th color="white" width="10%" fontSize="15px">Data de Nascimento</Th>
+                  <Th color="white" width="10%" fontSize="15px">Hobby</Th>
+                  <Th color="white" textAlign={"center"} fontSize="15px">Ações</Th>
                 </Tr>
               </Thead>
-              <Tbody bgColor="gray.500">
+              <Tbody bgColor="blue.50">
                 {desenvolvedores.map((devs) => {
                   return (
                     <Tr key={devs.id}>
-                      <Td width="30%" color="white">{devs.nome}</Td>
-                      <Td width="20%" color="white">{devs.nivel.nivel}</Td>
-                      <Td width="10%" color="white">{devs.sexo}</Td>
-                      <Td width="10%" color="white">
+                      <Td width="30%" color="black">{devs.nome}</Td>
+                      <Td width="20%" color="black">{devs.nivel.nivel}</Td>
+                      <Td width="10%" color="black">{devs.sexo}</Td>
+                      <Td width="10%" color="black">
                         {new Date(devs.data_nascimento).toLocaleString("pt-BR", {
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric"
                         })}
                       </Td>
-                      <Td width="10%" color="white">{devs.hobby}</Td>
+                      <Td width="10%" color="black">{devs.hobby}</Td>
                       <Td>
                         <HStack justifyContent={"space-between"}>
-                          <Button w="100%" onClick={(() => editDevModal(devs))}>
+                          <Button w="100%" bgColor="blue.700" color="white"
+                            colorScheme="blue" onClick={(() => editDevModal(devs))}>
                             Editar
                             <EditIcon marginLeft={2} />
                           </Button>
-                          <Button w="100%" onClick={() => handleDeleteModal(devs)}>
+                          <Button w="100%" bgColor="blue.700" color="white"
+                            colorScheme="blue" onClick={() => handleDeleteModal(devs)}>
                             Excluir
                             <DeleteIcon marginLeft={2} />
                           </Button>
@@ -495,7 +502,7 @@ export default function DesenvolvedoresHomoe() {
                           isCentered
                         >
                           <ModalOverlay />
-                          <ModalContent bgColor="gray.300">
+                          <ModalContent bgColor="white">
                             <ModalHeader
                               marginTop="10px"
                               fontSize="27px"
@@ -506,12 +513,14 @@ export default function DesenvolvedoresHomoe() {
                             >
                               {`Tem certeza que deseja exlcuir o Desenvolvedor ${devToDelete?.nome}?`}
                             </ModalHeader>
-                            <Divider />
                             <ModalBody>
                               <HStack justifyContent="space-between" margin={7}>
                                 <Button
                                   width="100%"
                                   onClick={() => onCloseDelte()}
+                                  color="white"
+                                  bgColor="blue.700"
+                                  colorScheme="blue"
                                 >
                                   Cancelar
                                 </Button>
@@ -538,16 +547,18 @@ export default function DesenvolvedoresHomoe() {
               </Tbody>
             </Table>
           </TableContainer>
-          {total && last_page && (
-            <Pagination
-              currentPage={current_page}
-              itemsPerPage={per_page}
-              totalItems={total}
-              totalPages={last_page}
-              onPageChange={handlePageChange}
-              onItemsPerPageChange={handleItemsPerPageChange}
-            />
-          )}
+          <Stack marginTop={10}>
+            {total && last_page && (
+              <Pagination
+                currentPage={current_page}
+                itemsPerPage={per_page}
+                totalItems={total}
+                totalPages={last_page}
+                onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
+              />
+            )}
+          </Stack>
         </Stack>
       </Box >
     </VStack >

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FormControl, FormLabel, Input, InputProps } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { SearchIcon } from '@chakra-ui/icons';
 
 const MotionFormLabel = motion(FormLabel);
 

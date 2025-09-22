@@ -8,7 +8,7 @@ export default function NiveisLayout({ children }: { children: ReactNode }) {
     <Flex
       minH="100vh"
     >
-      <Box flex="1" bgColor="#4a5568">
+      <Box flex="1" bgColor="white">
         {children}
       </Box>
     </Flex>

@@ -1,6 +1,6 @@
 'use client'
 
-import { List, ListItem, Text, VStack } from '@chakra-ui/react'
+import { Box, Image, List, ListItem, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 const MotionVStack = motion(VStack)
@@ -8,31 +8,40 @@ const MotionVStack = motion(VStack)
 export default function DashboardHome() {
 
   return (
-    <MotionVStack
+    <VStack
       minH="100vh"
-      align="start"
       justify="start"
       spacing="6"
-      paddingLeft="5%"
+      bgColor="whiteAlpha.500"
       color="white"
-      initial={{ z: -500, opacity: 0, backgroundColor: "#2D3748" }}
-      animate={{ z: 0, opacity: 1, backgroundColor: "#4A5568" }}
-      exit={{ z: 50, opacity: 0 }}
-      transition={{ duration: 0.5, delay: 0.5 }}
     >
-      <MotionVStack
-        initial={{ y: -500, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 50, opacity: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
+      <Box
+        minHeight="100px"
+        minWidth="100%"
+        bgColor="#2a4365"
+        alignContent="center"
+        paddingLeft={5}
       >
         <Text
           fontSize="4xl"
           fontWeight="bold"
-          paddingTop="10%"
           fontFamily="Geist"
+          color="white"
         >
-          Projeto de Cadastro de Desenvolvedores 🚀
+          Tela inicial
+        </Text>
+      </Box>
+      <Image src="/logo.svg" alt="Logo" width="700px" marginTop="30px" />
+      <VStack alignItems="center"
+        textAlign="center">
+        <Text
+          fontSize="4xl"
+          fontWeight="bold"
+          paddingTop="10px"
+          fontFamily="Geist"
+          color={"black"}
+        >
+          Gestor de Desenvolvedores
         </Text>
         <List >
           <ListItem>
@@ -41,8 +50,9 @@ export default function DashboardHome() {
               fontWeight="bold"
               paddingTop="4%"
               fontFamily="Geist"
+              color={"black"}
             >
-              Cadastre Níveis de Desenvolvedores 📄
+              Cadastre Níveis para Desenvolvedores
             </Text>
           </ListItem>
           <ListItem>
@@ -51,13 +61,13 @@ export default function DashboardHome() {
               fontWeight="bold"
               paddingTop="4%"
               fontFamily="Geist"
+              color={"black"}
             >
-              Cadastre Desenvoldedores e Vincule o Nível a eles! 📝
+              Cadastre Desenvoldedores e Vincule o Nível a eles!
             </Text>
           </ListItem>
         </List>
-
-      </MotionVStack>
-    </MotionVStack>
+      </VStack>
+    </VStack>
   )
 }

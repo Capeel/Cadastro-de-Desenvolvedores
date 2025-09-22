@@ -19,14 +19,11 @@ export default function Home() {
       justify="center"
       align="center"
       spacing="6"
-      bgGradient="linear(to-t, #718096, #4A5568, #2D3748)"
+      bgGradient="linear(to-t, #3182ce, #2c5282, #2a4365)"
       color="white"
+
     >
       <MotionVStack
-        initial={{ y: -500, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 50, opacity: 0 }}
-        transition={{ duration: 1 }}
       >
         <VStack paddingBottom="25%">
           <Text
@@ -34,14 +31,14 @@ export default function Home() {
             fontWeight="semibold"
             fontFamily="Geist"
           >
-            Bem-vindo ao Projeto
+            Bem-vindo ao
           </Text>
           <Text
             fontSize="5xl"
             fontWeight="semibold"
             fontFamily="Geist"
           >
-            Cadastro de Desenvolvedores
+            Gestor de Desenvolvedores
           </Text>
         </VStack>
       </MotionVStack>
@@ -49,16 +46,16 @@ export default function Home() {
         initial={{ z: -500, opacity: 0 }}
         animate={{ z: 0, opacity: 1 }}
         exit={{ z: -500, opacity: 0 }}
-        transition={{ duration: 0.9, delay: 1 }}
+        transition={{ duration: 0.9 }}
       >
         <Button
           size="lg"
           colorScheme={"blackAlpha  "}
           color={"white"}
           onClick={handleStart}
-          bgGradient="linear(to-r, #4A5568, #2D3748)"
+          bgGradient="linear(to-r, #2a4365, #1A365D)"
         >
-          Clique aqui para começar
+          Clique aqui para continuar
         </Button>
       </MotionVStack>
     </VStack>
