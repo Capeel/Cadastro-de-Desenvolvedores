@@ -65,4 +65,14 @@ export class DevelopersRepository extends Repository<DevelopersEntity> {
     };
   }
 
+  async getAllDevAndLevels() {
+    const result = await this.createQueryBuilder('desenvolvedores')
+      .select('desenvolvedores.nivel.id', 'nivel.id')
+      .addSelect('COUNT(desenvolvedores.id)', 'devCount')
+      .groupBy('desenvolvedores.nivel.id')
+      .getRawMany();
+
+    return result;
+  }
+
 }

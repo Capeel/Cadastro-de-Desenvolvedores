@@ -44,10 +44,15 @@ export const useDesenvolvedores = () => {
     return api.delete(`/desenvolvedores/${id}`);
   }
 
+  const getDevsCount = () => {
+    return api.get(`/desenvolvedores/get-dev-levels`);
+  }
+
   return {
     getDevelopers,
     createDevelopers,
     editDevelopers,
-    deletDeveloper
+    deletDeveloper,
+    getDevsCount
   }
 }

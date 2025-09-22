@@ -9,10 +9,22 @@ export class DevelopersController {
 
   @Get('/index')
   @HttpCode(HttpStatus.OK)
-  async getAll(
+  async getAllByQuey(
     @Query() data: DesenvolvedoresIndexQuery,
   ): Promise<DesenvolvedoresIndexPaginatedDto> {
     return this.developersService.getAllByQuery(data);
+  }
+
+  @Get('/get-all')
+  @HttpCode(HttpStatus.OK)
+  async getAll() {
+    return this.developersService.getAll();
+  }
+
+  @Get('/get-dev-levels')
+  @HttpCode(HttpStatus.OK)
+  async getAllDevAndLevels() {
+    return this.developersService.getAllDevAndLevels();
   }
 
   @Post('/create')

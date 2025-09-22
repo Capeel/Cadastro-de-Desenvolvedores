@@ -2,7 +2,7 @@
 
 import { AddIcon, ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons'
 import {
-  Box, Button, Divider, Flex, FormControl, FormErrorMessage, HStack,
+  Box, Button, Divider, FormControl, FormErrorMessage, HStack,
   Input,
   Modal,
   ModalBody,

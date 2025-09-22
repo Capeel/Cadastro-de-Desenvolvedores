@@ -1,7 +1,7 @@
 'use client'
 
 import { useNiveis } from '@/hooks/useNiveis'
-import { AddIcon, ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon, PlusSquareIcon, UpDownIcon } from '@chakra-ui/icons'
+import { AddIcon, ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons'
 import {
   Box, Button, Divider, Flex, FormControl, FormErrorMessage, HStack,
   Modal,
@@ -19,11 +19,13 @@ import { AnimatedInput } from '@/components/customInput'
 import { useForm } from 'react-hook-form';
 import { Pagination } from '@/components/pagination'
 import { LoadingOverlay } from '@/components/loadingOverlay'
+import { useDesenvolvedores } from '@/hooks/useDesenvolvedores'
 
 export default function NivelHome() {
   const [inputValue, setInputValue] = useState("");
   const [current_page, set_current_page] = useState<number>(1);
   const { getLevels, saveLevel, deleteLevel, editLevel } = useNiveis();
+  const { getDevsCount } = useDesenvolvedores();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const [nivel, setNivel] = useState<NiveisDataDto[]>([]);
@@ -32,6 +34,7 @@ export default function NivelHome() {
   const [total, set_total] = useState<number>();
   const [last_page, set_last_page] = useState<number>()
   const customToast = useToast();
+  const [devsCount, setDevsCount] = useState();
   const {
     register,
     handleSubmit,
@@ -58,6 +61,10 @@ export default function NivelHome() {
         set_current_page(current_page)
         set_total(response.data.total)
         set_last_page(response.data.last_page);
+        return getDevsCount()
+          .then((response) => {
+            setDevsCount(response.data);
+          })
       })
       .catch((error) => {
         customToast({ status: "error", description: error.response?.data?.message });
@@ -279,14 +286,25 @@ export default function NivelHome() {
                       orderBy === "asc" ? <ArrowDownIcon />
                         : <ArrowUpIcon />}
                   </Th>
+                  <Th color="white">
+                    Quantidade de Desenvolvedores
+                  </Th>
                   <Th color="white" textAlign={"center"}>Ações</Th>
                 </Tr>
               </Thead>
               <Tbody bgColor="gray.500">
                 {nivel.map((niveis) => {
+
+                  const countDev = (devsCount ?? []).find
+                    (dc => dc["nivel.id"] === niveis.id) as {
+                      "nivel.id": number; devCount: number
+                    } | undefined;
+                  const count = countDev?.devCount ?? 0;
+
                   return (
                     <Tr key={niveis.id}>
-                      <Td width="80%" color="white">{niveis.nivel}</Td>
+                      <Td width="70%" color="white">{niveis.nivel}</Td>
+                      <Td textAlign="center" color="white">{count}</Td>
                       <Td>
                         <HStack justifyContent={"space-between"}>
                           <Button w="100%" onClick={(() => editNivelModal(niveis))}>

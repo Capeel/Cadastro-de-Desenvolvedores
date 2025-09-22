@@ -32,7 +32,7 @@ export type DesenvolvedoresFilterDto = {
   nome?: string;
   sexo?: string;
   hobby?: string;
-  nivel_nivel?: string;
+  nivel?: string;
   data_nascimento?: string;
 };
 

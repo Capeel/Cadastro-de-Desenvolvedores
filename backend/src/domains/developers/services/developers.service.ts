@@ -15,6 +15,16 @@ export class DevelopersService {
     return await this.developersRepository.getByQuery(data);
   }
 
+  async getAll() {
+    return await this.developersRepository.find({
+      relations: ['nivel']
+    });
+  }
+
+  async getAllDevAndLevels() {
+    return await this.developersRepository.getAllDevAndLevels();
+  }
+
   async saveDevelopers(data: DesenvolvedoresFormCreate): Promise<DesenvolvedoresDataDto> {
 
     const level = await this.levelsService.findById(data.nivel.id);
