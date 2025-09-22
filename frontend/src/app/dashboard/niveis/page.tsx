@@ -1,9 +1,9 @@
 'use client'
 
 import { useNiveis } from '@/hooks/useNiveis'
-import { AddIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons'
+import { AddIcon, ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon, PlusSquareIcon, UpDownIcon } from '@chakra-ui/icons'
 import {
-  Box, Button, Divider, Flex, HStack,
+  Box, Button, Divider, Flex, FormControl, FormErrorMessage, HStack,
   Modal,
   ModalBody,
   ModalContent,
@@ -32,7 +32,13 @@ export default function NivelHome() {
   const [total, set_total] = useState<number>();
   const [last_page, set_last_page] = useState<number>()
   const customToast = useToast();
-  const { register, handleSubmit, watch, reset } = useForm<NiveisFormData>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors }
+  } = useForm<NiveisFormData>();
   const watchedNivel = watch('nivel');
   const {
     isOpen: isOpenDelete,
@@ -41,6 +47,7 @@ export default function NivelHome() {
   } = useDisclosure();
   const [nivelToDelete, setNivelToDelete] = useState<NiveisFormData>();
   const [editingNivel, setEditingNivel] = useState<NiveisFormData | null>()
+  const [orderBy, setOrderBy] = useState<"asc" | "dsc">("asc");
 
   const callbackNivel = useCallback(() => {
     setIsLoading(true);
@@ -63,6 +70,20 @@ export default function NivelHome() {
   useEffect(() => {
     callbackNivel()
   }, [callbackNivel]);
+
+  const sortByName = () => {
+    const sorted = [...nivel].sort((a, b) => {
+      const nameA = a.nivel ?? "";
+      const nameB = b.nivel ?? "";
+
+      return orderBy === "asc"
+        ? nameA.localeCompare(nameB)
+        : nameB.localeCompare(nameA);
+    });
+    setNivel(sorted);
+    setOrderBy(orderBy === "asc" ? "dsc" : "asc")
+  }
+
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -213,13 +234,18 @@ export default function NivelHome() {
                 </ModalHeader>
                 <ModalBody marginBottom="50px">
                   <Flex>
-                    <AnimatedInput
-                      marginTop="15px"
-                      width="100%"
-                      label="Nome do nível:"
-                      value={watchedNivel}
-                      {...register('nivel')}
-                    />
+                    <FormControl isInvalid={!!errors.nivel}>
+                      <AnimatedInput
+                        marginTop="15px"
+                        width="100%"
+                        label="Nome do nível:"
+                        value={watchedNivel}
+                        {...register('nivel', { required: 'Nivel é obrigatório' })}
+                      />
+                      <FormErrorMessage>
+                        {errors.nivel && errors.nivel.message}
+                      </FormErrorMessage>
+                    </FormControl>
                   </Flex>
                 </ModalBody>
                 <ModalFooter>
@@ -248,7 +274,11 @@ export default function NivelHome() {
             <Table>
               <Thead bgColor="gray.600">
                 <Tr>
-                  <Th color="white">Nível</Th>
+                  <Th color="white" onClick={sortByName}>
+                    Nível {
+                      orderBy === "asc" ? <ArrowDownIcon />
+                        : <ArrowUpIcon />}
+                  </Th>
                   <Th color="white" textAlign={"center"}>Ações</Th>
                 </Tr>
               </Thead>
@@ -328,7 +358,7 @@ export default function NivelHome() {
             />
           )}
         </Stack>
-      </Box>
+      </Box >
     </VStack >
   )
 }

@@ -1,8 +1,8 @@
 'use client'
 
-import { AddIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons'
+import { AddIcon, ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons'
 import {
-  Box, Button, Divider, Flex, HStack,
+  Box, Button, Divider, Flex, FormControl, FormErrorMessage, HStack,
   Input,
   Modal,
   ModalBody,
@@ -15,13 +15,13 @@ import {
   Tr, useDisclosure, useToast, VStack
 } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
-import { NiveisFilterDto, NiveisFormData } from '../niveis/types'
+import { NiveisFilterDto } from '../niveis/types'
 import { AnimatedInput } from '@/components/customInput'
 import { useForm } from 'react-hook-form';
 import { Pagination } from '@/components/pagination'
 import { LoadingOverlay } from '@/components/loadingOverlay'
 import { useDesenvolvedores } from '@/hooks/useDesenvolvedores'
-import { DesenvolvedorDto, DesenvolvedoresDataDto, DesenvolvedoresFilterDto, DesenvolvedorFormDto } from './types'
+import { DesenvolvedorDto, DesenvolvedoresFilterDto, DesenvolvedorFormDto } from './types'
 import { useNiveis } from '@/hooks/useNiveis'
 
 export default function DesenvolvedoresHomoe() {
@@ -39,11 +39,17 @@ export default function DesenvolvedoresHomoe() {
   const [total, set_total] = useState<number>();
   const [last_page, set_last_page] = useState<number>()
   const customToast = useToast();
-  const { register, handleSubmit, watch, reset } = useForm<DesenvolvedorFormDto>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors }
+  } = useForm<DesenvolvedorFormDto>();
   const watchedNome = watch('nome');
   const watchedSexo = watch('sexo');
-  const watchedNasc = watch('data_nascimento');
   const watchedHobby = watch('hobby');
+  const [orderBy, setOderBy] = useState<"asc" | "dsc">("asc");
 
   const filtersType = [
     { value: "nome", name: "Nome" },
@@ -82,6 +88,19 @@ export default function DesenvolvedoresHomoe() {
         setIsLoading(false);
       })
   }, [current_page, filter]);
+
+  const sortBy = () => {
+    const sorted = [...desenvolvedores].sort((a, b) => {
+      const nameA = a.nome ?? "";
+      const nameB = b.nome ?? "";
+
+      return orderBy == "asc"
+        ? nameA.localeCompare(nameB)
+        : nameB.localeCompare(nameA)
+    })
+    setDesenvolvedores(sorted);
+    setOderBy(orderBy === "asc" ? "dsc" : "asc");
+  }
 
   useEffect(() => {
     callbackDesenvolvedores()
@@ -263,14 +282,19 @@ export default function DesenvolvedoresHomoe() {
                 </ModalHeader>
                 <ModalBody marginBottom="50px">
                   <VStack>
-                    <AnimatedInput
-                      marginTop="15px"
-                      marginLeft={3}
-                      width="95%"
-                      label="Nome do Desenvolvedor"
-                      value={watchedNome}
-                      {...register('nome')}
-                    />
+                    <FormControl isInvalid={!!errors.nome}>
+                      <AnimatedInput
+                        marginTop="15px"
+                        marginLeft={3}
+                        width="95%"
+                        label="Nome do Desenvolvedor"
+                        value={watchedNome}
+                        {...register('nome', { required: "Nome do desenvolvedor deve ser informado" })}
+                      />
+                      <FormErrorMessage>
+                        {errors.nome && errors.nome.message}
+                      </FormErrorMessage>
+                    </FormControl>
                     <VStack w="100%" alignItems="start">
                       <Text
                         textAlign="start"
@@ -281,38 +305,48 @@ export default function DesenvolvedoresHomoe() {
                         fontWeight="semibold"
                       >Selecione o Nível
                       </Text>
-                      <Select
-                        width="98%"
-                        placeholder="Selecione o nível que deseja:"
-                        variant="flushed"
-                        paddingLeft={2}
-                        {...register("nivel.id")}
-                      >
-                        {niveis.map((nv) => {
-                          return (
-                            <option
-                              value={nv.id}
-                              key={nv.id}
-                              style={{
-                                backgroundColor: "#718096",
-                                paddingLeft: "20px",
-                                color: "white"
-                              }}
-                            >
-                              {nv.nivel}
-                            </option>
-                          )
-                        })}
-                      </Select>
+                      <FormControl isInvalid={!!errors.nivel?.id}>
+                        <Select
+                          width="98%"
+                          placeholder="Selecione o nível que deseja:"
+                          variant="flushed"
+                          paddingLeft={2}
+                          {...register("nivel.id", { required: "Nível deve ser informado" })}
+                        >
+                          {niveis.map((nv) => {
+                            return (
+                              <option
+                                value={nv.id}
+                                key={nv.id}
+                                style={{
+                                  backgroundColor: "#718096",
+                                  color: "white",
+                                }}
+                              >
+                                {nv.nivel}
+
+                              </option>
+                            )
+                          })}
+                        </Select>
+                        <FormErrorMessage>
+                          {errors.nivel?.id && errors.nivel?.id.message}
+                        </FormErrorMessage>
+                      </FormControl>
                     </VStack>
-                    <AnimatedInput
-                      marginTop="25px"
-                      label="Sexo"
-                      marginLeft={1}
-                      width="98%"
-                      value={watchedSexo}
-                      {...register('sexo')}
-                    />
+                    <FormControl isInvalid={!!errors.sexo}>
+                      <AnimatedInput
+                        marginTop="25px"
+                        label="Sexo"
+                        marginLeft={1}
+                        width="98%"
+                        value={watchedSexo}
+                        {...register('sexo', { required: "Sexo deve ser informado" })}
+                      />
+                      <FormErrorMessage>
+                        {errors.sexo && errors.sexo.message}
+                      </FormErrorMessage>
+                    </FormControl>
                     <VStack
                       w="100%"
                       marginTop="25px"
@@ -326,21 +360,33 @@ export default function DesenvolvedoresHomoe() {
                       >
                         Data de Nascimento
                       </Text>
-                      <Input
-                        variant="flushed"
-                        width="100%"
-                        type="date"
-                        paddingLeft={3}
-                        {...register('data_nascimento')}
-                      />
+                      <FormControl isInvalid={!!errors.data_nascimento}>
+                        <Input
+                          variant="flushed"
+                          width="100%"
+                          type="date"
+                          paddingLeft={3}
+                          {...register('data_nascimento',
+                            { required: "Data de nascimento deve ser informada" })
+                          }
+                        />
+                        <FormErrorMessage>
+                          {errors.data_nascimento && errors.data_nascimento.message}
+                        </FormErrorMessage>
+                      </FormControl>
                     </VStack>
-                    <AnimatedInput
-                      marginTop="25px"
-                      width="100%"
-                      label="Hobby"
-                      value={watchedHobby}
-                      {...register('hobby')}
-                    />
+                    <FormControl isInvalid={!!errors.hobby}>
+                      <AnimatedInput
+                        marginTop="25px"
+                        width="100%"
+                        label="Hobby"
+                        value={watchedHobby}
+                        {...register('hobby', { required: "Hobby deve ser informado" })}
+                      />
+                      <FormErrorMessage>
+                        {errors.hobby && errors.hobby.message}
+                      </FormErrorMessage>
+                    </FormControl>
                   </VStack>
                 </ModalBody>
                 <ModalFooter>
@@ -405,7 +451,11 @@ export default function DesenvolvedoresHomoe() {
             <Table>
               <Thead bgColor="gray.600">
                 <Tr>
-                  <Th color="white" width="30%">Nome</Th>
+                  <Th color="white" width="30%" onClick={sortBy}>
+                    Nome {
+                      orderBy === "asc" ? <ArrowDownIcon />
+                        : <ArrowUpIcon />}
+                  </Th>
                   <Th color="white" width="20%">Nível</Th>
                   <Th color="white" width="10%">Sexo</Th>
                   <Th color="white" width="10%">Data de Nascimento</Th>
@@ -499,7 +549,7 @@ export default function DesenvolvedoresHomoe() {
             />
           )}
         </Stack>
-      </Box>
+      </Box >
     </VStack >
   )
 }
