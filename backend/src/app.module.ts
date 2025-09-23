@@ -17,7 +17,7 @@ dotenv.config({ path: '.env' });
     database: process.env.POSTGRES_DB,
     entities: [__dirname + '../src/domains/*/entity.{js,ts}'],
     autoLoadEntities: true,
-    synchronize: true,
+    synchronize: false,
   }),
     LevelsModule,
     DevelopersModule,
