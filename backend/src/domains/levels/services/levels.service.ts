@@ -18,6 +18,10 @@ export class LevelsService {
     return await this.levelsRepository.find();
   }
 
+  async findById(id: number) {
+    return await this.levelsRepository.findOneBy({ id });
+  }
+
   async saveLevel(data: NiveisFormCreate): Promise<NiveisDataDto> {
 
     if (!data.nivel) {

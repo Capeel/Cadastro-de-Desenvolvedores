@@ -67,7 +67,6 @@ export class DevelopersService {
     });
 
     return this.developersRepository.save(developer);
-
   }
 
   async deleteDeveloper(id: number) {
