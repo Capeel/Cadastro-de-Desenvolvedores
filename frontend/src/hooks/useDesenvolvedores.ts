@@ -5,7 +5,6 @@ export const useDesenvolvedores = () => {
   const getDevelopers = ({
     nivel,
     nome,
-    data_nascimento,
     sexo,
     hobby,
     current_page,
@@ -19,9 +18,6 @@ export const useDesenvolvedores = () => {
     if (nome) {
       params = `${params}&nome=${nome}`;
     }
-    if (data_nascimento) {
-      params = `${params}&data_nascimento=${data_nascimento}`;
-    }
     if (sexo) {
       params = `${params}&sexo=${sexo}`;
     }
@@ -29,23 +25,23 @@ export const useDesenvolvedores = () => {
       params = `${params}&hobby=${hobby}`;
     }
 
-    return api.get<DesenvolvedoresIndexPaginatedDto>(`/desenvolvedores/index?${params}`)
+    return api.get<DesenvolvedoresIndexPaginatedDto>(`/developers/index?${params}`)
   }
 
   const createDevelopers = (data: DesenvolvedorFormDto) => {
-    return api.post<DesenvolvedorFormDto>(`/desenvolvedores/create`, data);
+    return api.post<DesenvolvedorFormDto>(`/developers/create`, data);
   }
 
   const editDevelopers = (id: number, data: DesenvolvedorFormDto) => {
-    return api.patch<DesenvolvedorFormDto>(`/desenvolvedores/update/${id}`, data);
+    return api.patch<DesenvolvedorFormDto>(`/developers/update/${id}`, data);
   }
 
   const deletDeveloper = (id: number) => {
-    return api.delete(`/desenvolvedores/${id}`);
+    return api.delete(`/developers/${id}`);
   }
 
   const getDevsCount = () => {
-    return api.get(`/desenvolvedores/get-dev-levels`);
+    return api.get(`/developers/levels-per-dev`);
   }
 
   return {

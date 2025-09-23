@@ -90,6 +90,21 @@ describe('Levels Index Test', () => {
     expect(response.body.data.length).toEqual(0);
   });
 
+  it('should create', async () => {
+
+    const newLevel = {
+      nivel: "Tech"
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/niveis/create')
+      .send(newLevel)
+      .expect(201);
+
+    expect(response.body.nivel).toEqual(newLevel.nivel);
+  });
+
+
 
 
 });

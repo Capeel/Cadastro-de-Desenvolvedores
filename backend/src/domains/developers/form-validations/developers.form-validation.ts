@@ -42,9 +42,6 @@ export class DesenvolvedoresIndexQuery {
   sexo?: string;
 
   @IsOptional()
-  data_nascimento?: string;
-
-  @IsOptional()
   hobby?: string;
 
   @IsOptional()

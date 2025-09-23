@@ -13,7 +13,7 @@ export class DevelopersRepository extends Repository<DevelopersEntity> {
   }
 
   async getByQuery(data: DesenvolvedoresIndexQuery): Promise<DesenvolvedoresIndexPaginatedDto> {
-    const { nome, sexo, data_nascimento, hobby, nivel, current_page, per_page } = data;
+    const { nome, sexo, hobby, nivel, current_page, per_page } = data;
 
     const qb = this.createQueryBuilder('desenvolvedores')
       .leftJoinAndSelect('desenvolvedores.nivel', 'nivel');
@@ -23,11 +23,6 @@ export class DevelopersRepository extends Repository<DevelopersEntity> {
     }
     if (sexo) {
       qb.andWhere('unaccent(desenvolvedores.sexo) ILIKE unaccent(:sexo)', { sexo: `%${sexo}%` })
-    }
-    if (data_nascimento) {
-      qb.andWhere('DATE(desenvolvedores.data_nascimento) = :data_nascimento', {
-        data_nascimento: data_nascimento,
-      });
     }
     if (hobby) {
       qb.andWhere('unaccent(desenvolvedores.hobby) ILIKE unaccent(:hobby)', { hobby: `%${hobby}%` })
@@ -65,7 +60,7 @@ export class DevelopersRepository extends Repository<DevelopersEntity> {
     };
   }
 
-  async getAllDevAndLevels() {
+  async getLevelsPerDev() {
     const result = await this.createQueryBuilder('desenvolvedores')
       .select('desenvolvedores.nivel.id', 'nivel.id')
       .addSelect('COUNT(desenvolvedores.id)', 'devCount')

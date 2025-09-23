@@ -13,23 +13,23 @@ export const useNiveis = () => {
       params = `${params}&nivel=${nivel}`;
     }
 
-    return api.get<NiveisIndexPaginatedDto>(`/niveis/index?${params}`);
+    return api.get<NiveisIndexPaginatedDto>(`/levels/index?${params}`);
   }
 
   const saveLevel = (data: NiveisFormData) => {
-    return api.post(`/niveis/create`, data);
+    return api.post(`/levels/create`, data);
   }
 
   const editLevel = (id: number, data: NiveisFormData) => {
-    return api.patch(`/niveis/update/${id}`, data);
+    return api.patch(`/levels/update/${id}`, data);
   }
 
   const deleteLevel = (id: number) => {
-    return api.delete(`/niveis/${id}`);
+    return api.delete(`/levels/${id}`);
   }
 
-  const getAllNiveis = () => {
-    return api.get(`/niveis/get-all`);
+  const getAllLevels = () => {
+    return api.get(`/levels/get-all`);
   }
 
 
@@ -38,6 +38,6 @@ export const useNiveis = () => {
     saveLevel,
     deleteLevel,
     editLevel,
-    getAllNiveis,
+    getAllLevels,
   }
 }
