@@ -18,18 +18,18 @@ export class LevelsService {
     return await this.levelsRepository.find();
   }
 
-  async findById(id: number) {
-    return await this.levelsRepository.findOneBy({ id });
-  };
-
   async saveLevel(data: NiveisFormCreate): Promise<NiveisDataDto> {
+
+    if (!data.nivel) {
+      throw new BadRequestException("Nível deve ser informado");
+    }
 
     const existLevel = await this.levelsRepository.findOne({
       where: { nivel: data.nivel }
     });
 
     if (existLevel) {
-      throw new BadRequestException(`O Nível ${data.nivel} já existe.`);
+      throw new BadRequestException(`O Nível já existe.`);
     };
 
     return await this.levelsRepository.save(data);
@@ -48,7 +48,7 @@ export class LevelsService {
     })
 
     if (existLevel) {
-      throw new BadRequestException(`Já existe o Nível ${data.nivel}`);
+      throw new BadRequestException(`Nível já existe`);
     }
 
     if (!level) {
