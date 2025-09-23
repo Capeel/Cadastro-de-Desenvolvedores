@@ -33,7 +33,6 @@ export type DesenvolvedoresFilterDto = {
   sexo?: string;
   hobby?: string;
   nivel?: string;
-  data_nascimento?: string;
 };
 
 export type DesenvolvedoresDataDto = {

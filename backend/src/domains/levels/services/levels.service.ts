@@ -14,7 +14,7 @@ export class LevelsService {
     return await this.levelsRepository.getAll(data);
   }
 
-  async getAllNiveis() {
+  async getAllLevels() {
     return await this.levelsRepository.find();
   }
 

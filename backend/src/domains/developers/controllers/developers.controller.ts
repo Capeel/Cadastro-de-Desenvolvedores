@@ -3,7 +3,7 @@ import { DevelopersService } from "../services/developers.service";
 import { DesenvolvedoresFormCreate, DesenvolvedoresFormUpdate, DesenvolvedoresIndexQuery } from "../form-validations/developers.form-validation";
 import { DesenvolvedoresDataDto, DesenvolvedoresIndexPaginatedDto } from "../dtos/developers.dto";
 
-@Controller('desenvolvedores')
+@Controller('developers')
 export class DevelopersController {
   constructor(private readonly developersService: DevelopersService) { }
 
@@ -21,10 +21,10 @@ export class DevelopersController {
     return this.developersService.getAll();
   }
 
-  @Get('/get-dev-levels')
+  @Get('/levels-per-dev')
   @HttpCode(HttpStatus.OK)
   async getAllDevAndLevels() {
-    return this.developersService.getAllDevAndLevels();
+    return this.developersService.getLevelsPerDev();
   }
 
   @Post('/create')

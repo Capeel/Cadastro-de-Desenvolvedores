@@ -3,7 +3,7 @@
 import { useNiveis } from '@/hooks/useNiveis'
 import { AddIcon, ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons'
 import {
-  Box, Button, Divider, Flex, FormControl, FormErrorMessage, HStack,
+  Box, Button, Flex, FormControl, FormErrorMessage, HStack,
   Modal,
   ModalBody,
   ModalContent,

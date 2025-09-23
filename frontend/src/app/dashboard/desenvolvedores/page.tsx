@@ -13,7 +13,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  SelectField,
   Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead,
   Tr, useDisclosure, useToast, VStack
 } from '@chakra-ui/react'
@@ -31,7 +30,7 @@ export default function DesenvolvedoresHomoe() {
   const [inputValue, setInputValue] = useState<string>();
   const [current_page, set_current_page] = useState<number>(1);
   const { getDevelopers, createDevelopers, editDevelopers, deletDeveloper } = useDesenvolvedores();
-  const { getAllNiveis } = useNiveis();
+  const { getAllLevels } = useNiveis();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const [desenvolvedores, setDesenvolvedores] = useState<DesenvolvedorDto[]>([]);
@@ -58,7 +57,6 @@ export default function DesenvolvedoresHomoe() {
     { value: "nome", name: "Nome" },
     { value: "nivel", name: "Nível" },
     { value: "sexo", name: "Sexo" },
-    { value: "data_nascimento", name: "Data de Nascimento" },
     { value: "hobby", name: "Hobby" },
   ]
 
@@ -79,7 +77,7 @@ export default function DesenvolvedoresHomoe() {
         set_current_page(current_page)
         set_total(response.data.total)
         set_last_page(response.data.last_page);
-        return getAllNiveis()
+        return getAllLevels()
           .then((response) => {
             setNiveis(response.data);
           })

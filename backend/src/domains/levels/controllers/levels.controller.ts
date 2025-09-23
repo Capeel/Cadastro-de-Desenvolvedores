@@ -3,7 +3,7 @@ import { LevelsService } from "../services/levels.service";
 import { NiveisFormCreate, NiveisFormUpdate, NiveisIndexQuery } from "../form-validations/levels.form-validations"
 import { NiveisDataDto, NiveisIndexPaginatedDto } from "../dtos/level.dto"
 
-@Controller('niveis')
+@Controller('levels')
 export class LevelsController {
   constructor(private readonly levelsService: LevelsService) { }
 
@@ -17,8 +17,8 @@ export class LevelsController {
 
   @Get('/get-all')
   @HttpCode(HttpStatus.OK)
-  async getAllniveis() {
-    return await this.levelsService.getAllNiveis();
+  async getAllLevels() {
+    return await this.levelsService.getAllLevels();
   };
 
   @Post('/create')

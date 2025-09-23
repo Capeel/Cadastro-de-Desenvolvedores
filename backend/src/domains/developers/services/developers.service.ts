@@ -21,8 +21,8 @@ export class DevelopersService {
     });
   }
 
-  async getAllDevAndLevels() {
-    return await this.developersRepository.getAllDevAndLevels();
+  async getLevelsPerDev() {
+    return await this.developersRepository.getLevelsPerDev();
   }
 
   async saveDevelopers(data: DesenvolvedoresFormCreate): Promise<DesenvolvedoresDataDto> {
