@@ -23,7 +23,43 @@ services:
     ports:
       - "6432:5432"
     volumes:
-      - pgdata_test:/var/lib/postgresql/data    
+      - pgdata_test:/var/lib/postgresql/data
+
+  backend:
+    container_name: nestjs_api
+    build:
+      context: ./backend
+      target: production
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=development
+    command: yarn start:dev
+
+  frontend:
+    container_name: nextjs_app
+    build:
+      context: ./frontend
+      target: production
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    depends_on:
+      - backend
+    env_file:
+      - ./frontend/.env
+    environment:
+      - NODE_ENV=development
 
 volumes:
   pgdata:
