@@ -36,7 +36,8 @@ export default function Sidebar() {
             color="black"
             colorScheme="whiteAlpha"
             fontSize="25px"
-            marginBottom="15px"          >
+            marginBottom="15px"
+          >
             Início
           </Button>
         </Link>

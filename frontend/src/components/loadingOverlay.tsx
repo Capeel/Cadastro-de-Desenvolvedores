@@ -1,4 +1,4 @@
-import { Box, Spinner, Text } from "@chakra-ui/react";
+import { Box, Spinner } from "@chakra-ui/react";
 
 interface LoadingOverlayProps {
   isOpen: boolean;
@@ -36,5 +36,4 @@ export const LoadingOverlay = ({ isOpen }: LoadingOverlayProps) => {
   );
 };
 
-// Uso:
 <LoadingOverlay isOpen={true} />

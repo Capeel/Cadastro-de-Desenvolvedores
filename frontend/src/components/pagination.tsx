@@ -38,12 +38,10 @@ export const Pagination = ({
     const maxVisiblePages = 5;
 
     if (totalPages <= maxVisiblePages) {
-      // Se temos 5 páginas ou menos, mostra todas
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      // Lógica para mostrar páginas com "..."
       if (currentPage <= 3) {
         pages.push(1, 2, 3, 4, '...', totalPages);
       } else if (currentPage >= totalPages - 2) {
@@ -56,13 +54,10 @@ export const Pagination = ({
     return pages;
   };
 
-  if (totalPages <= 1) return null;
-
   return (
     <Box>
       <Flex justify="center" align="center">
         <HStack spacing={1}>
-          {/* Primeira página */}
           <IconButton
             aria-label="Primeira página"
             icon={<ArrowLeftIcon />}
@@ -72,8 +67,6 @@ export const Pagination = ({
             isDisabled={currentPage === 1 || isLoading}
             _hover={{ bg: 'gray.100' }}
           />
-
-          {/* Página anterior */}
           <IconButton
             aria-label="Página anterior"
             icon={<ChevronLeftIcon />}
@@ -83,8 +76,6 @@ export const Pagination = ({
             isDisabled={currentPage === 1 || isLoading}
             _hover={{ bg: 'gray.100' }}
           />
-
-          {/* Números das páginas */}
           {getPageNumbers().map((page, index) => (
             <React.Fragment key={index}>
               {page === '...' ? (
@@ -106,8 +97,6 @@ export const Pagination = ({
               )}
             </React.Fragment>
           ))}
-
-          {/* Próxima página */}
           <IconButton
             aria-label="Próxima página"
             icon={<ChevronRightIcon />}
@@ -117,8 +106,6 @@ export const Pagination = ({
             isDisabled={currentPage === totalPages || isLoading}
             _hover={{ bg: 'gray.100' }}
           />
-
-          {/* Última página */}
           <IconButton
             aria-label="Última página"
             icon={<ArrowRightIcon />}

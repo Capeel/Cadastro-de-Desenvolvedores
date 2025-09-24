@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FormControl, FormLabel, Input, InputProps } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { SearchIcon } from '@chakra-ui/icons';
 
 const MotionFormLabel = motion(FormLabel);
 
@@ -22,8 +21,6 @@ export const AnimatedInput = React.forwardRef<HTMLInputElement, AnimatedInputPro
   ...inputProps
 }, ref) => {
   const [isFocus, setIsFocus] = useState(false);
-
-  // Para funcionar tanto com useState quanto com react-hook-form
   const inputValue = value || inputProps.defaultValue || '';
 
   return (
