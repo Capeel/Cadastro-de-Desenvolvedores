@@ -313,10 +313,10 @@ export default function NivelHome() {
                   {nivel.map((niveis) => {
 
                     const countDev = (devsCount ?? []).find
-                      (dc => dc["nivel.id"] === niveis.id) as {
-                        "nivel.id": number; devCount: number
+                      (dc => dc["nivel_id"] === niveis.id) as {
+                        "nivel_id": number; dev_count: number
                       } | undefined;
-                    const count = countDev?.devCount ?? 0;
+                    const count = countDev?.dev_count ?? 0;
 
                     return (
                       <Tr key={niveis.id}>
@@ -324,11 +324,23 @@ export default function NivelHome() {
                         <Td textAlign="center" color="black">{count}</Td>
                         <Td>
                           <HStack justifyContent={"space-between"}>
-                            <Button w="100%" bgColor="blue.700" colorScheme="blue" color="white" onClick={(() => editNivelModal(niveis))}>
+                            <Button
+                              w="100%"
+                              bgColor="blue.700"
+                              colorScheme="blue"
+                              color="white"
+                              onClick={(() => editNivelModal(niveis))}
+                            >
                               Editar
                               <EditIcon marginLeft={2} />
                             </Button>
-                            <Button w="100%" bgColor="blue.700" colorScheme="blue" color="white" onClick={() => handleDeleteModal(niveis)}>
+                            <Button
+                              w="100%"
+                              bgColor="blue.700"
+                              colorScheme="blue"
+                              color="white"
+                              onClick={() => handleDeleteModal(niveis)}
+                            >
                               Excluir
                               <DeleteIcon marginLeft={2} />
                             </Button>
