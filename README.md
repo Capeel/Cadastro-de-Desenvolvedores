@@ -44,7 +44,7 @@
 <h2 align="left">- Na pasta raiz do projeto executar o comando: - docker compose build</h2>
 <h2 align="left">- Ainda na pasta raiz do projeto executar o comando: - docker compose up -d</h2>
 <br />
-<h3 align="center">Após executar o docker compose up você pode testar o projeto:</h3>
+<h1 align="center">Após executar o docker compose up você pode testar o projeto:</h1>
 <h2 align="left">- Acesso ao Frontend pelo: http://localhost:3001/</h2>
 <h2 align="left">- Acesso ao Swagger pelo: http://localhost:3000/api/docs</h2>
 <h2 align="left">- E no terminal na pasta backend acesso aos testes executando: - yarn test</h2>
