@@ -85,32 +85,30 @@ describe('Levels Index Test', () => {
     await dataSource.destroy();
   });
 
-  it('should return all levels successfully', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10')
-      .expect(200);
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data[1].nivel).toEqual("Pleno");
-    expect(response.body.data[2].nivel).toEqual("Senior");
-    expect(response.body.data.length).toEqual(3);
-  });
+  it('should delete a developer successfully', async () => {
 
-  it('should return only junior level', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=Junior')
-      .expect(200);
+    const levelsRepository = dataSource.getRepository(LevelsEntity);
+    const levelPleno = await levelsRepository.findOneByOrFail({ nivel: 'Junior' });
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data.length).toEqual(1);
-  });
+    const newDeveloper = {
+      nivel: { id: levelPleno.id },
+      nome: 'Carlos',
+      sexo: 'Masculino',
+      data_nascimento: '1999-07-02',
+      hobby: 'Basquete'
+    };
 
-  it('should not return values', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=TechLead')
-      .expect(200);
+    const newDeveloperResponse = await request(app.getHttpServer())
+      .post('/developers/create')
+      .send(newDeveloper)
+      .expect(201);
 
-    expect(response.body.data.length).toEqual(0);
+    const developerId = newDeveloperResponse.body.id;
+
+    await request(app.getHttpServer())
+      .delete(`/developers/${developerId}`)
+      .expect(200)
   });
 
 });

@@ -85,32 +85,44 @@ describe('Levels Index Test', () => {
     await dataSource.destroy();
   });
 
-  it('should return all levels successfully', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10')
-      .expect(200);
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data[1].nivel).toEqual("Pleno");
-    expect(response.body.data[2].nivel).toEqual("Senior");
-    expect(response.body.data.length).toEqual(3);
+
+  it('should create a developer successfully', async () => {
+    const levelsRepository = dataSource.getRepository(LevelsEntity);
+    const levelPleno = await levelsRepository.findOneByOrFail({ nivel: 'Pleno' });
+
+    const newDeveloper = {
+      nivel: { id: levelPleno.id },
+      nome: 'Roberto',
+      sexo: 'Masculino',
+      data_nascimento: '1989-05-04',
+      hobby: 'Futebol'
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/developers/create')
+      .send(newDeveloper)
+      .expect(201);
+
+    expect(response.body.nome).toEqual(newDeveloper.nome)
   });
 
-  it('should return only junior level', async () => {
+  it('should return an error if nivel does not exist', async () => {
+
+    const newDeveloper = {
+      nivel: { id: 999 },
+      nome: 'Roberto',
+      sexo: 'Masculino',
+      data_nascimento: '1989-05-04',
+      hobby: 'Futebol'
+    };
+
     const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=Junior')
-      .expect(200);
+      .post('/developers/create')
+      .send(newDeveloper)
+      .expect(400);
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data.length).toEqual(1);
-  });
-
-  it('should not return values', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=TechLead')
-      .expect(200);
-
-    expect(response.body.data.length).toEqual(0);
+    expect(response.body.message).toEqual("Nível não encontrado")
   });
 
 });

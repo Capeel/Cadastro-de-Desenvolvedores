@@ -85,32 +85,73 @@ describe('Levels Index Test', () => {
     await dataSource.destroy();
   });
 
-  it('should return all levels successfully', async () => {
+
+  it('should update an existing level', async () => {
+    const toBeUpdated = {
+      nivel: "Junior A"
+    }
+
+    const createLevelResponse = await request(app.getHttpServer())
+      .post('/levels/create')
+      .send(toBeUpdated)
+      .expect(201)
+
+    const levelId = createLevelResponse.body.id;
+
+    const updatedLevel = {
+      nivel: "Pleno A"
+    }
+
+    const updatedLevelResponse = await request(app.getHttpServer())
+      .patch(`/levels/update/${levelId}`)
+      .send(updatedLevel)
+      .expect(200)
+
+    expect(updatedLevelResponse.body.nivel).toEqual(updatedLevel.nivel)
+  })
+
+  it('should return an error if level id not exists', async () => {
+    const levelId = 999;
+
+    const updatedLevel = {
+      nivel: "Senior A"
+    }
+
     const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10')
-      .expect(200);
+      .patch(`/levels/update/${levelId}`)
+      .send(updatedLevel)
+      .expect(400)
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data[1].nivel).toEqual("Pleno");
-    expect(response.body.data[2].nivel).toEqual("Senior");
-    expect(response.body.data.length).toEqual(3);
-  });
+    expect(response.body.message).toBe("Nível não encontrado")
+  })
 
-  it('should return only junior level', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=Junior')
-      .expect(200);
+  it('should return an error if try to update an level that already exists', async () => {
+    const newLevel = {
+      nivel: "Teach Lead A"
+    }
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data.length).toEqual(1);
-  });
+    const toBeUpdated = {
+      nivel: "Senior C"
+    }
 
-  it('should not return values', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=TechLead')
-      .expect(200);
+    await request(app.getHttpServer())
+      .post('/levels/create')
+      .send(newLevel)
+      .expect(201)
 
-    expect(response.body.data.length).toEqual(0);
+    const toBeUpdatedResponse = await request(app.getHttpServer())
+      .post('/levels/create')
+      .send(toBeUpdated)
+      .expect(201)
+
+    const levelId = toBeUpdatedResponse.body.id;
+
+    const updatedLevelResponse = await request(app.getHttpServer())
+      .patch(`/levels/update/${levelId}`)
+      .send(newLevel)
+      .expect(400)
+
+    expect(updatedLevelResponse.body.message).toBe("Nível já existe");
   });
 
 });

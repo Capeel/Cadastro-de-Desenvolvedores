@@ -85,32 +85,34 @@ describe('Levels Index Test', () => {
     await dataSource.destroy();
   });
 
-  it('should return all levels successfully', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10')
-      .expect(200);
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data[1].nivel).toEqual("Pleno");
-    expect(response.body.data[2].nivel).toEqual("Senior");
-    expect(response.body.data.length).toEqual(3);
+
+  it('should delete a level successfully', async () => {
+    const newLevel = {
+      nivel: "Junior C"
+    }
+
+    const newLevelResponse = await request(app.getHttpServer())
+      .post('/levels/create')
+      .send(newLevel)
+      .expect(201)
+
+    const levelId = newLevelResponse.body.id
+
+    await request(app.getHttpServer())
+      .delete(`/levels/${levelId}`)
+      .expect(200)
   });
 
-  it('should return only junior level', async () => {
+  it('should return an error on trying to delete a level existent on a developer', async () => {
+    const levelsRepository = dataSource.getRepository(LevelsEntity);
+    const levelJunior = await levelsRepository.findOneByOrFail({ nivel: 'Junior' });
+
     const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=Junior')
-      .expect(200);
+      .delete(`/levels/${levelJunior.id}`)
+      .expect(400)
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data.length).toEqual(1);
-  });
-
-  it('should not return values', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=TechLead')
-      .expect(200);
-
-    expect(response.body.data.length).toEqual(0);
+    expect(response.body.message).toEqual("Nível já está vinculado a um Desenvolvedor");
   });
 
 });

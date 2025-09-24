@@ -85,29 +85,55 @@ describe('Levels Index Test', () => {
     await dataSource.destroy();
   });
 
-  it('should return all levels successfully', async () => {
+  it('should return all developers successfully', async () => {
     const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10')
+      .get('/developers/index?current_page=1&per_page=10')
       .expect(200);
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
-    expect(response.body.data[1].nivel).toEqual("Pleno");
-    expect(response.body.data[2].nivel).toEqual("Senior");
-    expect(response.body.data.length).toEqual(3);
+    expect(response.body.data[0].nome).toEqual("Gabriel");
+    expect(response.body.data[1].nome).toEqual("Vivian");
+    expect(response.body.data.length).toEqual(2);
   });
 
-  it('should return only junior level', async () => {
+  it('should return only developer level Junior', async () => {
     const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=Junior')
+      .get('/developers/index?current_page=1&per_page=10&nivel=Junior')
       .expect(200);
 
-    expect(response.body.data[0].nivel).toEqual("Junior");
+    expect(response.body.data[0].nivel.nivel).toEqual("Junior");
     expect(response.body.data.length).toEqual(1);
   });
 
-  it('should not return values', async () => {
+  it('should return only developer name Vivian', async () => {
     const response = await request(app.getHttpServer())
-      .get('/levels/index?current_page=1&per_page=10&nivel=TechLead')
+      .get('/developers/index?current_page=1&per_page=10&nome=Vivian')
+      .expect(200);
+
+    expect(response.body.data[0].nome).toEqual("Vivian");
+    expect(response.body.data.length).toEqual(1);
+  });
+
+  it('should return only developer gender Masculino', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/developers/index?current_page=1&per_page=10&sexo=Masculino')
+      .expect(200);
+
+    expect(response.body.data[0].sexo).toEqual("Masculino");
+    expect(response.body.data.length).toEqual(1);
+  });
+
+  it('should return only developer hobby Series', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/developers/index?current_page=1&per_page=10&hobby=Series')
+      .expect(200);
+
+    expect(response.body.data[0].hobby).toEqual("Series");
+    expect(response.body.data.length).toEqual(1);
+  });
+
+  it('should not return any values', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/developers/index?current_page=1&per_page=10&hobby=Hockei')
       .expect(200);
 
     expect(response.body.data.length).toEqual(0);
