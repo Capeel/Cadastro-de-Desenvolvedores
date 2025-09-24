@@ -1,6 +1,21 @@
 <h1 align="center">Cadastro de Desenvolvedores</h1>
 
-<h2 align="center">Um projeto feito para a gestão de desenvolvedores e seus respectivos níveis!</h2>
+<h2 align="center">Um projeto feito para a gestão de desenvolvedores e seus respectivos níveis!
+<br />
+<br />
+Nesse projeto você pode:
+  <br />
+  <br />
+<p align="left">- Cadastrar e Editar Níveis</p>
+<p align="left">- Cadastrar e Editar Desenvolvedores</p>
+<p align="left">- Ter acesso à lista de Níveis cadastrados e filtrá-los pelo nome.</p>
+<p align="left">- Ter acesso à lista de Desenvolvedores cadastrados e filtrá-los por nome, hobby, níveis e gênero.</p>
+<p align="left">- Excluir Níveis caso não estejam vinculados a Desenvolvedores</p>
+<p align="left">- Excluir Desenvolvedores</p>
+
+
+
+</h2>
 
 
 <h2 align="center">Para a criação desse projeto utilizei das seguintes tecnologias</h2>
@@ -45,7 +60,7 @@
 <h2 align="left">- Ainda na pasta raiz do projeto executar o comando: - docker compose up -d</h2>
 <br />
 <h1 align="center">Após executar o docker compose up você pode testar o projeto:</h1>
-<h2 align="left">- Acesso ao Frontend pelo: http://localhost:3001/</h2>
+<h2 align="left">- Para acessar o Projeto: http://localhost:3001/</h2>
 <h2 align="left">- Acesso ao Swagger pelo: http://localhost:3000/api/docs</h2>
 <h2 align="left">- E no terminal na pasta backend acesso aos testes executando: - yarn test</h2>
 <br />
