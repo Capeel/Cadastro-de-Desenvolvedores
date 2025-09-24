@@ -62,8 +62,8 @@ export class DevelopersRepository extends Repository<DevelopersEntity> {
 
   async getLevelsPerDev() {
     const result = await this.createQueryBuilder('desenvolvedores')
-      .select('desenvolvedores.nivel.id', 'nivel.id')
-      .addSelect('COUNT(desenvolvedores.id)', 'devCount')
+      .select('desenvolvedores.nivel.id', 'nivel_id')
+      .addSelect('COUNT(desenvolvedores.id)', 'dev_count')
       .groupBy('desenvolvedores.nivel.id')
       .getRawMany();
 
